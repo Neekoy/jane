@@ -1,0 +1,63 @@
+<link rel="stylesheet" href="/css/display.css" />
+<div ng-controller="janeController as jane">
+
+<div class="headers">
+	<div class="name" ng-click="jane.sortBy('server')">Hostname</div>
+	<div class="reason" ng-click="jane.sortBy('alert')">Service</div>
+	<div class="time" ng-click="jane.sortBy('-unixTime')">Duration</div>
+</div>
+
+<table class="alertsTable">
+	<tr class="alertsRow" ng-repeat="alert in jane.nagiosInfo | orderBy : jane.orderBy">
+
+	<td class="serverName">
+		[[ alert.server ]]
+	</td>
+	<td ng-click="jane.alertClicked(alert.server)" class="alertContent" ng-style="jane.changeColour(alert)">
+		<table style="width: 100%;" ng-repeat="alertContent in alert.alerts">
+		<tr>
+		<td>
+			<b>[[ alertContent.alertName ]]</b>
+		</td>
+		</tr>
+		<tr>
+		<td>
+			[[ alertContent.alertReason ]]
+		</td>
+		</tr>
+		<table>
+		<tr ng-show="alert.comments.comment" class="commentLine">
+		<td>
+			________________
+			<b><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> [[ alert.comments.user ]]:</b> [[ alert.comments.comment ]]
+		</td>
+		</tr>
+		</table>
+		<table style="width: 100%;" ng-show="jane.checkIfCommenting(alert.server)">
+		<form>
+		<tr>
+		<td style="width: 99%;">
+			<input ng-model="jane.commentMessage" class="form-control textbox" value="{{ jane.commentMessage }}">
+		</td>
+		<td>
+			<button class="btn btn-active" ng-click="jane.submitComment(alert.server)" type="submit" name="update" value=" " hidefocus="true" tabindex="-1">Submit</button>
+		</td>
+		</tr>
+		</form>
+		</table>
+	</td>
+	<td ng-style="jane.changeColour(alert)" class="personCell">
+		<button ng-click="jane.comment(alert.server)" type="button" class="btn btn-default" aria-label="Left Align">
+ 		<span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+		</button>
+		[[ alert.person ]]
+	</td>
+	<td class="timeElapsed">
+		[[ alert.timeElapsed ]]
+	</td>
+
+	</tr>
+</table>
+
+
+</div>
