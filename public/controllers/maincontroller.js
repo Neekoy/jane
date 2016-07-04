@@ -59,6 +59,8 @@ app.controller('janeController', function($scope, $http) {
 		submitComment['comment'] = this.commentMessage;
 		socket.emit("newComment", submitComment);
 		this.commentMessage = "";
+		this.commenting = false;
+		this.paused = false;
 	}
 
 	this.checkIfCommenting = function (data) {
